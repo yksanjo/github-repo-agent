@@ -1,0 +1,38 @@
+======================================================================
+🚀 GitHub Repository Agent - Local Web Server
+======================================================================
+
+📍 Server starting at: http://localhost:5001
+💡 Open your browser and navigate to the URL above
+🔒 No API keys needed - everything runs locally!
+
+💻 To stop the server, press Ctrl+C
+
+======================================================================
+
+ * Serving Flask app 'web_server'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.28:5001
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [25/Dec/2025 11:02:52] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 11:09:10] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 11:09:10] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+127.0.0.1 - - [25/Dec/2025 11:09:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [25/Dec/2025 11:09:10] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+127.0.0.1 - - [25/Dec/2025 11:15:45] "POST /api/analyze HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:51:50] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:51:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:51:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:51:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:51:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:52:16] "POST /api/analyze HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:52:18] "POST /api/analyze HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:53:28] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:53:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:53:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [25/Dec/2025 16:53:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:54:04] "POST /api/analyze HTTP/1.1" 200 -
+127.0.0.1 - - [25/Dec/2025 16:54:17] "POST /api/analyze HTTP/1.1" 200 -

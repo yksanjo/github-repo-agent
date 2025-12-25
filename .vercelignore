@@ -1,0 +1,9 @@
+.repo_cache/
+*.log
+__pycache__/
+*.pyc
+.env
+.env.local
+server.pid
+*.cache
+

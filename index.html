@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repository Agent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1e1e2e;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid #2d2d44;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { opacity: 0.95; font-size: 1.1em; }
+        .content {
+            padding: 40px;
+            background: #1e1e2e;
+        }
+        .input-section {
+            background: #252538;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #3a3a4e;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #3a3a4e;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background: #1a1a2a;
+            color: #e0e0e0;
+            color-scheme: dark;
+        }
+        input[type="text"]::placeholder {
+            color: #888;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #1f1f2f;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+        .result-section {
+            background: #252538;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #3a3a4e;
+        }
+        .result-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .result-section p {
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+        .result-section a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .result-section a:hover {
+            text-decoration: underline;
+        }
+        .result-section ul {
+            color: #d0d0d0;
+            margin-left: 20px;
+        }
+        .result-section li {
+            margin-bottom: 8px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+        }
+        .badge-success { background: #2d5a3d; color: #90ee90; }
+        .badge-warning { background: #5a4d2d; color: #ffd700; }
+        .badge-danger { background: #5a2d2d; color: #ff6b6b; }
+        .badge-info { background: #2d3d5a; color: #87ceeb; }
+        .recommendation {
+            background: #1a1a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .recommendation h4 {
+            color: #e0e0e0;
+            margin-bottom: 8px;
+        }
+        .recommendation p {
+            color: #c0c0c0;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+        .priority-high { border-left-color: #ff6b6b; }
+        .priority-medium { border-left-color: #ffd700; }
+        .priority-low { border-left-color: #51cf66; }
+        .error {
+            background: #3a1f1f;
+            border: 1px solid #5a2d2d;
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 GitHub Repository Agent</h1>
+            <p>Analyze any GitHub repository and get intelligent recommendations - Deployed on Vercel!</p>
+        </div>
+        <div class="content">
+            <div class="input-section">
+                <form id="analyzeForm" onsubmit="analyzeRepo(event)">
+                    <div class="form-group">
+                        <label for="repoUrl">Repository URL or owner/repo:</label>
+                        <input type="text" id="repoUrl" name="repoUrl" 
+                               placeholder="e.g., facebook/react or https://github.com/facebook/react" 
+                               required
+                               autocomplete="off">
+                    </div>
+                    <button type="submit">🔍 Analyze Repository</button>
+                </form>
+            </div>
+            
+            <div class="loading" id="loading">
+                <p>⏳ Analyzing repository... This may take a moment.</p>
+            </div>
+            
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get API URL - use relative path for Vercel
+        const API_URL = window.location.origin + '/api';
+        
+        async function analyzeRepo(event) {
+            event.preventDefault();
+            const repoUrl = document.getElementById('repoUrl').value.trim();
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            
+            if (!repoUrl) {
+                results.innerHTML = '<div class="error">❌ Please enter a repository URL</div>';
+                results.style.display = 'block';
+                return;
+            }
+            
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            results.innerHTML = '';
+            
+            try {
+                console.log('Calling API:', API_URL + '/analyze');
+                console.log('Repository:', repoUrl);
+                
+                const response = await fetch(API_URL + '/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({repo_url: repoUrl})
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(errorText);
+                    } catch {
+                        errorData = { error: errorText || `HTTP error! status: ${response.status}` };
+                    }
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Analysis data received:', data);
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                results.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Error</h3>
+                        <p>${error.message}</p>
+                        <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
+                            Check browser console (F12) for details.
+                        </p>
+                    </div>
+                `;
+                results.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        function displayResults(data) {
+            const results = document.getElementById('results');
+            let html = '';
+            
+            // Overview
+            html += '<div class="result-section"><h3>📊 Overview</h3>';
+            html += '<p><strong>Repository:</strong> ' + escapeHtml(data.repo_name || 'Unknown') + '</p>';
+            html += '<p><strong>URL:</strong> <a href="' + escapeHtml(data.repo_url || '#') + '" target="_blank">' + escapeHtml(data.repo_url || 'N/A') + '</a></p>';
+            html += '</div>';
+            
+            // Languages
+            if (data.languages && Object.keys(data.languages).length > 0) {
+                html += '<div class="result-section"><h3>📝 Languages</h3>';
+                for (const [lang, pct] of Object.entries(data.languages)) {
+                    html += '<span class="badge badge-info">' + escapeHtml(lang) + ': ' + pct.toFixed(1) + '%</span>';
+                }
+                html += '</div>';
+            }
+            
+            // Structure
+            if (data.structure) {
+                html += '<div class="result-section"><h3>🏗️ Structure</h3>';
+                const s = data.structure;
+                html += '<span class="badge ' + (s.has_readme ? 'badge-success' : 'badge-warning') + '">README</span>';
+                html += '<span class="badge ' + (s.has_license ? 'badge-success' : 'badge-warning') + '">LICENSE</span>';
+                html += '<span class="badge ' + (s.has_ci ? 'badge-success' : 'badge-warning') + '">CI/CD</span>';
+                html += '<span class="badge ' + (s.has_tests ? 'badge-success' : 'badge-warning') + '">Tests</span>';
+                html += '</div>';
+            }
+            
+            // Patterns
+            if (data.patterns && data.patterns.length > 0) {
+                html += '<div class="result-section"><h3>🎯 Patterns</h3>';
+                data.patterns.forEach(p => {
+                    html += '<span class="badge badge-info">' + escapeHtml(p) + '</span>';
+                });
+                html += '</div>';
+            }
+            
+            // Metrics
+            if (data.metrics) {
+                html += '<div class="result-section"><h3>📈 Metrics</h3>';
+                const m = data.metrics;
+                if (m.total_files) html += '<p><strong>Total Files:</strong> ' + m.total_files + '</p>';
+                if (m.code_files) html += '<p><strong>Code Files:</strong> ' + m.code_files + '</p>';
+                if (m.test_files) html += '<p><strong>Test Files:</strong> ' + m.test_files + '</p>';
+                if (m.total_lines) html += '<p><strong>Total Lines:</strong> ' + m.total_lines.toLocaleString() + '</p>';
+                if (m.avg_file_size) html += '<p><strong>Avg File Size:</strong> ' + m.avg_file_size.toFixed(1) + ' lines</p>';
+                html += '</div>';
+            }
+            
+            // Recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += '<div class="result-section"><h3>💡 Recommendations</h3>';
+                data.recommendations.forEach(rec => {
+                    const priority = rec.priority || 'medium';
+                    html += '<div class="recommendation priority-' + priority + '">';
+                    html += '<h4>' + escapeHtml(rec.title || 'Recommendation') + '</h4>';
+                    html += '<p><strong>Category:</strong> ' + escapeHtml(rec.category || 'General') + '</p>';
+                    html += '<p>' + escapeHtml(rec.description || '') + '</p>';
+                    html += '<p><strong>Action:</strong> ' + escapeHtml(rec.action || '') + '</p>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            } else {
+                html += '<div class="result-section"><h3>💡 Recommendations</h3>';
+                html += '<p>No specific recommendations at this time. Your repository looks great! 🎉</p>';
+                html += '</div>';
+            }
+            
+            // AI Insights
+            if (data.ai_insights) {
+                html += '<div class="result-section"><h3>🤖 AI Insights</h3>';
+                if (data.ai_insights.architecture_assessment) {
+                    html += '<p><strong>Architecture:</strong> ' + escapeHtml(data.ai_insights.architecture_assessment) + '</p>';
+                }
+                if (data.ai_insights.maturity_level) {
+                    html += '<p><strong>Maturity Level:</strong> ' + escapeHtml(data.ai_insights.maturity_level) + '</p>';
+                }
+                if (data.ai_insights.next_steps && data.ai_insights.next_steps.length > 0) {
+                    html += '<p><strong>Next Steps:</strong></p><ul>';
+                    data.ai_insights.next_steps.forEach(step => {
+                        html += '<li>' + escapeHtml(step) + '</li>';
+                    });
+                    html += '</ul>';
+                }
+                html += '</div>';
+            }
+            
+            results.innerHTML = html;
+            results.style.display = 'block';
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Test API connection on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(API_URL + '/health');
+                if (response.ok) {
+                    console.log('✅ API is ready');
+                } else {
+                    console.warn('⚠️ API health check failed');
+                }
+            } catch (error) {
+                console.warn('⚠️ Could not reach API:', error);
+            }
+        });
+    </script>
+</body>
+</html>
