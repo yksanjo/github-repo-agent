@@ -1,0 +1,14 @@
+{
+  "name": "github-repo-agent",
+  "version": 2,
+  "builds": [
+    { "src": "web_server.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "web_server.py" }
+  ],
+  "env": {
+    "GITHUB_TOKEN": "@github-token",
+    "POSTHOG_API_KEY": "@posthog-api-key"
+  }
+}
