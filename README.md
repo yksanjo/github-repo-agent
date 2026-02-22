@@ -1,266 +1,84 @@
-# ⚡ RepoPulse
+# github-repo-agent
 
-**Instant repository intelligence. Zero config. No API keys.**
+## Detailed Description
 
-```
-https://github.com/owner/repo ──► 10 seconds ──► 📊 full breakdown
-```
+github-repo-agent is maintained as an industry-grade software project with production-ready engineering practices.  
+This repository includes documented setup, quality gates, operational guidance, and governance standards so contributors can safely build, test, and ship changes with confidence.
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/yksanjo/repopulse/ci.yml?branch=main&style=flat-square)](https://github.com/yksanjo/repopulse/actions)
-[![Version](https://img.shields.io/github/v/release/yksanjo/repopulse?style=flat-square)](https://github.com/yksanjo/repopulse/releases)
-[![License](https://img.shields.io/github/license/yksanjo/repopulse?style=flat-square)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square)](https://python.org)
+## Problem Statement
 
-[🚀 Live Demo](https://repo-agent-demo.vercel.app) · [📖 API Docs](#api) · [💬 Discord](https://discord.gg/repo-agent)
+Describe the user or business problem this project solves, the target users, and expected outcomes.
 
----
+## Solution Overview
 
-## Why RepoPulse?
+Summarize the architecture, core modules, and runtime behavior at a high level.
 
-**Understand any codebase in 10 seconds without cloning it.**
+## Key Features
 
-No API keys. No setup. No digging through files. Just paste a GitHub URL and get instant insights on architecture, dependencies, security gaps, and improvement opportunities.
+- Clear project scope and intended use.
+- Reproducible local development workflow.
+- Test coverage and CI quality gates.
+- Security and contribution policies.
+- Deployment-ready repository structure.
 
-```
-📊 Repository Analysis: vercel/next.js
-======================================================================
+## Repository Structure
 
-📝 Languages:
-   • TypeScript: 89.2%
-   • Rust: 7.3%
-   • JavaScript: 3.5%
-
-🏗️  Structure:
-   • Has README: ✅
-   • Has LICENSE: ✅
-   • Has CI/CD: ✅
-   • Has Tests: ✅
-
-🎯 Patterns: React, Turborepo, Docker, Testing, CI/CD
-
-💡 Quick Wins:
-   1. Update dependencies (12 behind)
-   2. Add CodeQL security scanning
-   3. Enable branch protection rules
+```text
+.
+|-- src/                  # Core implementation
+|-- tests/                # Automated test suites
+|-- docs/                 # Design notes and operational docs
+|-- .github/workflows/    # CI pipelines
+|-- README.md
+|-- LICENSE
+|-- CONTRIBUTING.md
+|-- SECURITY.md
+|-- CODE_OF_CONDUCT.md
 ```
 
----
+## Getting Started
 
-## Quick Wins (Try These Now)
+### Prerequisites
+
+- Git
+- Project runtime/toolchain for this repo
+
+### Local Setup
 
 ```bash
-# 1. Analyze a popular repo
-python cli.py analyze vercel/next.js
-
-# 2. Get security recommendations
-python cli.py recommend facebook/react --focus security
-
-# 3. Compare two frameworks
-python cli.py compare vercel/next.js remix-run/remix
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt  # or: pip install -e .[dev]
+pytest
 ```
-
-**What you get instantly:**
-- Language breakdown & tech stack detection
-- Architecture patterns (microservices, monorepo, etc.)
-- Security gaps & dependency vulnerabilities
-- Missing files (LICENSE, CONTRIBUTING, etc.)
-- Code quality metrics & test coverage
-
----
-
-## 3 Use Cases (Copy-Paste Ready)
-
-### 1. Due Diligence Before Adopting
-```bash
-# Will this library still be maintained in 2 years?
-python cli.py analyze owner/library --export report.json
-# Check: commit frequency, contributor count, issue resolution time
-```
-
-### 2. Audit Your Own Repos
-```bash
-# Find all repos missing LICENSE or README
-python cli.py batch-analyze ~/my-repos --check-files LICENSE README.md
-
-# Get a prioritized todo list for each repo
-python cli.py recommend my-org/my-repo --format markdown
-```
-
-### 3. Compare Frameworks/Solutions
-```bash
-# Side-by-side comparison of state management libraries
-python cli.py compare reduxjs/redux pmndrs/zustand
-# Outputs: bundle size, test coverage, maintenance score, community health
-```
-
----
-
-## What I Used This For
-
-> *"Analyzed 50 repos to find patterns in how top open-source projects structure their documentation. Found that repos with CONTRIBUTING.md have 3x more external PRs."*
-
-> *"Evaluated 12 authentication libraries before adopting one for production. Discovered 3 had unmaintained dependencies with known CVEs."*
-
-> *"Audited our company's 20+ microservices in one afternoon. Found 6 repos without LICENSE files and 4 with exposed secrets in git history."*
-
-> *"Compared 8 React component libraries for a new project. RepoPulse showed me which ones had active maintainers, good test coverage, and TypeScript support—saved me days of manual research."*
-
----
-
-## Installation (30 Seconds)
-
-### Option 1: One-Click Deploy
-
-[![Deploy on Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yksanjo/repopulse)
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/repopulse)
-
-### Option 2: Local (3 Commands)
-
-```bash
-git clone https://github.com/yksanjo/repopulse.git
-cd repopulse && pip install -r requirements.txt
-python web_server.py  # http://localhost:5001
-```
-
-### Option 3: Docker
-
-```bash
-docker run -p 5001:5001 yksanjo/repopulse
-```
-
----
 
 ## Usage
 
-### Web Interface
+Document primary commands, API routes, CLI examples, or UI workflows here.
 
-```bash
-python web_server.py
-# Open http://localhost:5001
-# Paste any GitHub repo URL
-```
+## Quality Standards
 
-### CLI
+- CI must pass before merge.
+- Changes require tests for critical behavior.
+- Security-sensitive changes should include risk notes.
+- Keep pull requests focused and reviewable.
 
-```bash
-# Analyze any public repo
-python cli.py analyze vercel/next.js
+## Security
 
-# Get recommendations
-python cli.py recommend owner/repo --focus security
+See `SECURITY.md` for responsible disclosure and handling guidelines.
 
-# Export to JSON
-python cli.py analyze owner/repo --export analysis.json
+## Contributing
 
-# Batch analyze multiple repos
-python cli.py batch-analyze repos.txt --format csv
-```
+See `CONTRIBUTING.md` for branching, commit, and pull request expectations.
 
-### Python API
+## Roadmap
 
-```python
-from github_repo_agent import GitHubRepoAgent
+Track upcoming milestones, technical debt, and planned feature work.
 
-agent = GitHubRepoAgent()
-analysis = agent.analyze_repo("vercel/next.js")
+## Support
 
-print(analysis['languages'])   # {'TypeScript': 89.2, 'Rust': 7.3}
-print(analysis['patterns'])    # ['React', 'Turborepo', 'Docker']
-print(analysis['quick_wins'])  # ['Update dependencies', 'Add CodeQL']
-```
-
-### MCP Server (for Claude/Cursor/Windsurf)
-
-Add to `~/.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "repo-pulse": {
-      "command": "python",
-      "args": ["/path/to/repopulse/mcp_server.py"]
-    }
-  }
-}
-```
-
-Then ask your AI agent:
-- *"Analyze facebook/react and tell me the architecture patterns"*
-- *"What security issues does this repo have?"*
-- *"Compare next.js and remix-run/remix for enterprise use"*
-
----
-
-## API Reference {#api}
-
-### `analyze_repo`
-
-```json
-POST /api/analyze
-{
-  "owner": "vercel",
-  "repo": "next.js"
-}
-```
-
-Returns:
-```json
-{
-  "languages": {"TypeScript": 89.2, "Rust": 7.3},
-  "structure": {"has_readme": true, "has_ci_cd": true},
-  "patterns": ["React", "Turborepo", "Docker"],
-  "metrics": {"total_files": 4523, "test_files": 892},
-  "quick_wins": ["Update dependencies", "Add security scanning"]
-}
-```
-
-### `get_recommendations`
-
-```json
-POST /api/recommend
-{
-  "owner": "vercel",
-  "repo": "next.js",
-  "focus": "security"
-}
-```
-
-### `compare_repos`
-
-```json
-POST /api/compare
-{
-  "repos": ["vercel/next.js", "remix-run/remix"]
-}
-```
-
----
-
-## Features
-
-| Feature | Status |
-|---------|--------|
-| ⚡ **Zero config** | Works out of the box |
-| 🔓 **No API keys** | Analyzes public repos without authentication |
-| 🔒 **Private repos** | Add GitHub token for private access |
-| 🤖 **MCP integration** | Use with Claude, Cursor, Windsurf |
-| 🔄 **CI/CD ready** | GitHub Actions integration |
-| 📤 **Export formats** | JSON, CSV, Markdown |
-| 🏎️ **Fast** | Average analysis time: 8 seconds |
-| 🧠 **Smart patterns** | Detects 50+ architecture patterns |
-
----
-
-## Metrics
-
-![GitHub stars](https://img.shields.io/github/stars/yksanjo/repopulse?style=flat-square)
-![Repos analyzed](https://img.shields.io/badge/repos%20analyzed-50K+-blue?style=flat-square)
-![Avg analysis time](https://img.shields.io/badge/avg%20time-8s-green?style=flat-square)
-
----
+Open a GitHub issue for bugs, feature requests, or documentation gaps.
 
 ## License
 
-MIT — Analyze all the things.
-
-Built by [@yksanjo](https://twitter.com/yksanjo) for developers who want to understand code fast.
+This project is released under the MIT License.
